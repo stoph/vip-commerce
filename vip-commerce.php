@@ -7,13 +7,18 @@ function vip_commerce_check_settings() {
   $access_token = get_option('vip_commerce_shopify_access_token');
   $domain = get_option('vip_commerce_shopify_domain');
 
-  if (!$access_token || !$domain) {
+  $mesh_api_key = get_option('vip_commerce_mesh_api_key');
+  $mesh_project_id = get_option('vip_commerce_mesh_project_id');
+
+  if (!$mesh_api_key || !$mesh_project_id) {
     add_action('admin_notices', 'vip_commerce_settings_notice');
     return;
   }
 
   define( 'SHOPIFY_DOMAIN', $domain );
   define( 'SHOPIFY_ACCESS_TOKEN', $access_token );
+  define( 'MESH_API_KEY', $mesh_api_key );
+  define( 'MESH_PROJECT_ID', $mesh_project_id );
 
   require_once( plugin_dir_path( __FILE__ ) . 'blocks/commerce-block.php' );
   require_once( plugin_dir_path( __FILE__ ) . 'blocks/commerce-search-block.php' );
@@ -32,7 +37,6 @@ function vip_commerce_settings_notice() {
   <?php
 }
 
-
 function vip_commerce_enqueue() {
   wp_enqueue_script(
     'vip-commerce-block',
@@ -41,6 +45,26 @@ function vip_commerce_enqueue() {
     filemtime( plugin_dir_path( __FILE__ ) . 'build/index.js' ),
     true
   );
+}
+
+function call_mesh_api( $query) {
+
+  $response = wp_remote_post( 'https://mesh-api.wpvip.com/project/' . MESH_PROJECT_ID . '/production/graphql', [
+    'headers' => [
+      'Content-Type' => 'application/json',
+      'Authorization' => 'Bearer ' . MESH_API_KEY,
+    ],
+    'body' => json_encode(array('query' => $query)),
+  ] );
+
+  if ( is_wp_error( $response ) ) {
+    return array( 'error' => $response->get_error_message() );
+  }
+
+  $body = wp_remote_retrieve_body( $response );
+  $data = json_decode( $body, true );
+  
+  return $data;
 }
 
 function call_shopify_api( $query ) {
@@ -59,7 +83,10 @@ function call_shopify_api( $query ) {
     return array( 'error' => $response->get_error_message() );
   }
 
-  return wp_remote_retrieve_body( $response );
+  $body = wp_remote_retrieve_body( $response );
+  $data = json_decode( $body, true );
+  
+  return $data;
 }
 
 
@@ -74,6 +101,8 @@ add_action('admin_menu', 'vip_commerce_settings_page');
 function vip_commerce_register_settings() {
   register_setting('vip_commerce_settings', 'vip_commerce_shopify_access_token');
   register_setting('vip_commerce_settings', 'vip_commerce_shopify_domain');
+  register_setting('vip_commerce_settings', 'vip_commerce_mesh_api_key');
+  register_setting('vip_commerce_settings', 'vip_commerce_mesh_project_id');
 }
 add_action('admin_init', 'vip_commerce_register_settings');
 
@@ -97,6 +126,18 @@ function vip_commerce_settings_page_html() {
           <th scope="row">Shopify Domain</th>
           <td>
             <input type="text" name="vip_commerce_shopify_domain" value="<?php echo esc_attr(get_option('vip_commerce_shopify_domain')); ?>" />
+          </td>
+        </tr>
+        <tr valign="top">
+          <th scope="row">Mesh API Key</th>
+          <td>
+            <input type="text" name="vip_commerce_mesh_api_key" value="<?php echo esc_attr(get_option('vip_commerce_mesh_api_key')); ?>" />
+          </td>
+        </tr>
+        <tr valign="top">
+          <th scope="row">Mesh Project ID</th>
+          <td>
+            <input type="text" name="vip_commerce_mesh_project_id" value="<?php echo esc_attr(get_option('vip_commerce_mesh_project_id')); ?>" />
           </td>
         </tr>
       </table>

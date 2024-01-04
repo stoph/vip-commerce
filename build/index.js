@@ -175,7 +175,7 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
       isPrimary: true,
       onClick: handleOnSelectButtonClick
-    }, "Select"))), productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }, "Select"))), productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
       dangerouslySetInnerHTML: {
         __html: productData.description
       }
@@ -185,10 +185,12 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
       style: {
         maxWidth: '30%'
       }
-    })));
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+      allowedBlocks: ALLOWED_BLOCKS
+    }));
   },
   save: props => {
-    return null;
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks.Content, null);
   }
 });
 

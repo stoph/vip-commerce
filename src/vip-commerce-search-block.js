@@ -84,16 +84,17 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
         { productData && (
           <div>
             <h2>{ productData.name }</h2>
-            <div dangerouslySetInnerHTML={ { __html: productData.description } }></div>
+            <p dangerouslySetInnerHTML={ { __html: productData.description } }></p>
             <p>${ parseFloat(productData.price).toFixed(2) }</p>
             <img src={ productData.image } alt={ productData.name } style={ { maxWidth: '30%' } } />
           </div>
         ) }
+        <InnerBlocks allowedBlocks={ ALLOWED_BLOCKS } />
       </>
     );
   },
 
   save: ( props ) => {
-    return null;
+    return ( <InnerBlocks.Content /> );
   },
 } );
