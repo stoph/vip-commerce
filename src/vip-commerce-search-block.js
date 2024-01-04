@@ -81,32 +81,19 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
             <Button isPrimary onClick={ handleOnSelectButtonClick }>Select</Button>
           </PanelBody>
         </InspectorControls>
-        <div style={{ display: 'flex' }}>
-          <div style={{ width: '50%' }}>
-            { productData && (
-              <div>
-                <h2>{ productData.name }</h2>
-                <div dangerouslySetInnerHTML={ { __html: productData.description } }></div>
-                <p>${ parseFloat(productData.price).toFixed(2) }</p>
-                <img src={ productData.image } alt={ productData.name } style={ { maxWidth: '30%' } } />
-              </div>
-            ) }
+        { productData && (
+          <div>
+            <h2>{ productData.name }</h2>
+            <div dangerouslySetInnerHTML={ { __html: productData.description } }></div>
+            <p>${ parseFloat(productData.price).toFixed(2) }</p>
+            <img src={ productData.image } alt={ productData.name } style={ { maxWidth: '30%' } } />
           </div>
-          <div style={{ width: '50%' }}>
-            <InnerBlocks allowedBlocks={ ALLOWED_BLOCKS } />
-          </div>
-        </div>
+        ) }
       </>
     );
   },
 
   save: ( props ) => {
-    return (
-      <div style={{ display: 'flex' }}>
-        <div style={{ width: '50%' }}>
-          <InnerBlocks.Content />
-        </div>
-      </div>
-    );
+    return null;
   },
 } );
