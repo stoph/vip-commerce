@@ -149,6 +149,15 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
       }
     };
     const selectedProductData = products.find(product => product.id === selectedProduct);
+    let productData = selectedProductData;
+    if (!productData) {
+      productData = {
+        name: 'Product Name',
+        description: 'Product Description',
+        price: '0.00',
+        image: 'https://via.placeholder.com/360x360'
+      };
+    }
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PanelBody, {
       title: "Product Search"
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(TextControl, {
@@ -174,13 +183,13 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
       style: {
         width: '50%'
       }
-    }, selectedProductData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, selectedProductData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }, productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       dangerouslySetInnerHTML: {
-        __html: selectedProductData.description
+        __html: productData.description
       }
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(selectedProductData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-      src: selectedProductData.image,
-      alt: selectedProductData.name,
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(productData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+      src: productData.image,
+      alt: productData.name,
       style: {
         maxWidth: '30%'
       }
@@ -296,6 +305,13 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vip_commerce_search_block__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vip-commerce-search-block */ "./src/vip-commerce-search-block.js");
 
 
+//import './vip-commerce-pattern.js';
+
+// Grrr
+const nonProdBar = document.getElementById('vip-non-prod-bar');
+if (nonProdBar) {
+  nonProdBar.remove();
+}
 })();
 
 /******/ })()

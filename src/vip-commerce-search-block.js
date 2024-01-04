@@ -53,6 +53,16 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
 
     const selectedProductData = products.find( product => product.id === selectedProduct );
 
+    let productData = selectedProductData;
+    if (!productData) {
+      productData = {
+        name: 'Product Name',
+        description: 'Product Description',
+        price: '0.00',
+        image: 'https://via.placeholder.com/360x360'
+      };
+    }
+
     return (
       <>
         <InspectorControls>
@@ -73,12 +83,12 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
         </InspectorControls>
         <div style={{ display: 'flex' }}>
           <div style={{ width: '50%' }}>
-            { selectedProductData && (
+            { productData && (
               <div>
-                <h2>{ selectedProductData.name }</h2>
-                <div dangerouslySetInnerHTML={ { __html: selectedProductData.description } }></div>
-                <p>${ parseFloat(selectedProductData.price).toFixed(2) }</p>
-                <img src={ selectedProductData.image } alt={ selectedProductData.name } style={ { maxWidth: '30%' } } />
+                <h2>{ productData.name }</h2>
+                <div dangerouslySetInnerHTML={ { __html: productData.description } }></div>
+                <p>${ parseFloat(productData.price).toFixed(2) }</p>
+                <img src={ productData.image } alt={ productData.name } style={ { maxWidth: '30%' } } />
               </div>
             ) }
           </div>
