@@ -1,9 +1,10 @@
 <?php 
+namespace VIP\Commerce;
 
 add_action( 'rest_api_init', function () {
   register_rest_route( 'vip-commerce/v1', '/products', array(
     'methods' => 'GET',
-    'callback' => 'vip_commerce_get_products',
+    'callback' => 'VIP\Commerce\vip_commerce_get_products',
     'permission_callback' => '__return_true',
   ) );
 } );
@@ -38,7 +39,7 @@ GRAPHQL;
 
   
   $data = call_mesh_api( $query );
-
+  
   $products = array_map( function( $edge ) {
     $node = $edge['node'];
     return array(
@@ -50,11 +51,12 @@ GRAPHQL;
     );
   }, $data['data']['ShopifyStorefront_products']['edges'] );
 
+  //error_log(print_r($products, true));
   return array( 'products' => $products );
 }
 
 register_block_type( 'vip-commerce/vip-commerce-block', array(
-  'render_callback' => 'vip_commerce_render_block',
+  'render_callback' => 'VIP\Commerce\vip_commerce_render_block',
 ) );
 
 function vip_commerce_render_block( $attributes ) {

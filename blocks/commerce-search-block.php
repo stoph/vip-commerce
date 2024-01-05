@@ -1,9 +1,10 @@
 <?php 
+namespace VIP\Commerce;
 
 add_action( 'rest_api_init', function () {
   register_rest_route( 'vip-commerce/v1', '/products-by-name', array(
     'methods' => 'GET',
-    'callback' => function ( WP_REST_Request $request ) {
+    'callback' => function ( \WP_REST_Request $request ) {
       $search_term = $request->get_param( 'search' );
       return vip_commerce_get_products_by_name( $search_term );
     },
@@ -105,8 +106,8 @@ GRAPHQL;
 // }
 // GRAPHQL;
   $data = call_mesh_api( $query );
-  error_log($query);
-  error_log(print_r($data, true));
+  //error_log($query);
+  //error_log(print_r($data, true));
 
   $product = $data['data']['ShopifyStorefront_product'];
 
@@ -124,7 +125,7 @@ GRAPHQL;
  */
 
 register_block_type( 'vip-commerce/vip-commerce-search-block', array(
-  'render_callback' => 'vip_commerce_search_render_block',
+  'render_callback' => 'VIP\Commerce\vip_commerce_search_render_block',
 ) );
 
 function vip_commerce_search_render_block( $attributes, $content ) {
