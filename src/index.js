@@ -2,7 +2,9 @@ import './vip-commerce-block';
 import './vip-commerce-search-block';
 //import './vip-commerce-pattern.js';
 
-// Grrr
+
+
+// TKTK: Remove this when we're ready to go live
 const nonProdBar = document.getElementById( 'vip-non-prod-bar' );
 if ( nonProdBar ) {
   nonProdBar.remove();

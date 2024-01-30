@@ -175,17 +175,20 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
       isPrimary: true,
       onClick: handleOnSelectButtonClick
-    }, "Select"))), productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+    }, "Select"))), productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(productData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+      style: {
+        width: '240px'
+      }
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+      src: productData.image,
+      alt: productData.name
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
       dangerouslySetInnerHTML: {
         __html: productData.description
       }
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(productData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
-      src: productData.image,
-      alt: productData.name,
-      style: {
-        maxWidth: '30%'
-      }
-    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: "https://stoph-test.myshopify.com/products/"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, "View Product")))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
       allowedBlocks: ALLOWED_BLOCKS
     }));
   },
@@ -287,7 +290,7 @@ __webpack_require__.r(__webpack_exports__);
 
 //import './vip-commerce-pattern.js';
 
-// Grrr
+// TKTK: Remove this when we're ready to go live
 const nonProdBar = document.getElementById('vip-non-prod-bar');
 if (nonProdBar) {
   nonProdBar.remove();

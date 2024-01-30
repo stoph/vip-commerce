@@ -111,13 +111,22 @@ GRAPHQL;
 
   $product = $data['data']['ShopifyStorefront_product'];
 
+  $slug = createSlug($product['title']);
   return array(
     'id' => $product['id'],
     'name' => $product['title'],
+    'slug' => $slug,
     'description' => $product['descriptionHtml'],
     'price' => $product['priceRange']['minVariantPrice']['amount'],
     'image' => $product['images']['edges'][0]['node']['originalSrc'],
   );
+}
+
+function createSlug($text) {
+  $text = strtolower($text);
+  $text = preg_replace('/[^a-z0-9-]/', '-', $text);
+  $text = preg_replace('/-+/', "-", $text);
+  return trim($text, '-');
 }
 
 /**
@@ -145,9 +154,16 @@ function vip_commerce_search_render_block( $attributes, $content ) {
 
   $output = '<div class="vip-commerce-product">';
   $output .= '<h2>' . esc_html( $product['name'] ) . '</h2>';
-  $output .= '<p>' . $product['description'] . '</p>';
   $output .= '<p>$' . number_format( $product['price'], 2 ) . '</p>';
-  $output .= '<img src="' . esc_url( $product['image'] ) . '" alt="' . esc_attr( $product['name'] ) . '" style="max-width: 30%;" />';
+  $output .= '<table>';
+  $output .= '<tr><td style="width: 240px;">';
+  $output .= '<img src="' . esc_url( $product['image'] ) . '" alt="' . esc_attr( $product['name'] ) . '" style="max-width: 100%;" />';
+  $output .= '</td><td>';
+  $output .= '<p>' . $product['description'] . '</p>';
+
+  $output .= '<a href="https://stoph-test.myshopify.com/products/' . $product['slug'] . '"><button>View Product</button></a>';
+  $output .= '</td></tr>';
+  $output .= '</table>';
   $output .= '</div>';
 
   $output .= $content;

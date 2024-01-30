@@ -84,9 +84,21 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
         { productData && (
           <div>
             <h2>{ productData.name }</h2>
-            <p dangerouslySetInnerHTML={ { __html: productData.description } }></p>
             <p>${ parseFloat(productData.price).toFixed(2) }</p>
-            <img src={ productData.image } alt={ productData.name } style={ { maxWidth: '30%' } } />
+            <table>
+              <tr>
+                <td style={{width: '240px'}}>
+                  <img src={ productData.image } alt={ productData.name } />
+                </td>
+                <td>
+                  <p dangerouslySetInnerHTML={ { __html: productData.description } }></p>
+                    <a href='https://stoph-test.myshopify.com/products/'>
+                      <button>View Product</button>
+                    </a>
+                </td>
+              </tr>
+            </table>
+            
           </div>
         ) }
         <InnerBlocks allowedBlocks={ ALLOWED_BLOCKS } />
