@@ -175,7 +175,7 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
       isPrimary: true,
       onClick: handleOnSelectButtonClick
-    }, "Select"))), productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(productData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    }, "Select"))), productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(productData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       style: {
         width: '240px'
       }
@@ -188,7 +188,7 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
       }
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: "https://stoph-test.myshopify.com/products/"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, "View Product")))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, "View Product"))))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
       allowedBlocks: ALLOWED_BLOCKS
     }));
   },

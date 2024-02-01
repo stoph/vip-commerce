@@ -86,17 +86,19 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
             <h2>{ productData.name }</h2>
             <p>${ parseFloat(productData.price).toFixed(2) }</p>
             <table>
-              <tr>
-                <td style={{width: '240px'}}>
-                  <img src={ productData.image } alt={ productData.name } />
-                </td>
-                <td>
-                  <p dangerouslySetInnerHTML={ { __html: productData.description } }></p>
-                    <a href='https://stoph-test.myshopify.com/products/'>
-                      <button>View Product</button>
-                    </a>
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td style={{width: '240px'}}>
+                    <img src={ productData.image } alt={ productData.name } />
+                  </td>
+                  <td>
+                    <p dangerouslySetInnerHTML={ { __html: productData.description } }></p>
+                      <a href='https://stoph-test.myshopify.com/products/'>
+                        <button>View Product</button>
+                      </a>
+                  </td>
+                </tr>
+              </tbody>
             </table>
             
           </div>
