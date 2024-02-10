@@ -66,6 +66,140 @@ registerBlockType('vip-commerce/vip-commerce-block', {
 
 /***/ }),
 
+/***/ "./src/vip-commerce-collection-block.js":
+/*!**********************************************!*\
+  !*** ./src/vip-commerce-collection-block.js ***!
+  \**********************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const {
+  registerBlockType
+} = wp.blocks;
+const {
+  apiFetch
+} = wp;
+const {
+  useState,
+  useEffect
+} = wp.element;
+const {
+  PanelBody,
+  TextControl,
+  SelectControl,
+  Button
+} = wp.components;
+const {
+  InspectorControls,
+  InnerBlocks
+} = wp.blockEditor;
+const ALLOWED_BLOCKS = ['core/paragraph', 'core/heading'];
+registerBlockType('vip-commerce/vip-commerce-collection-block', {
+  title: 'VIP Commerce Collection Block',
+  icon: 'smiley',
+  category: 'common',
+  attributes: {
+    searchPhrase: {
+      type: 'string',
+      default: ''
+    },
+    collection: {
+      type: 'string',
+      default: ''
+    }
+  },
+  edit: props => {
+    const {
+      attributes: {
+        collection
+      },
+      setAttributes
+    } = props;
+    const [selectedCollection, setSelectedCollection] = useState(collection);
+    const [products, setProducts] = useState([]);
+    const [collections, setCollections] = useState([]);
+    useEffect(() => {
+      apiFetch({
+        path: '/vip-commerce/v1/collections'
+      }).then(data => {
+        setCollections(data.collections);
+      });
+    }, []);
+    useEffect(() => {
+      if (selectedCollection) {
+        apiFetch({
+          path: `/vip-commerce/v1/products-by-collection?collection=${selectedCollection}`
+        }).then(data => {
+          setProducts(data.products);
+        });
+      }
+    }, [selectedCollection]);
+    const onCollectionChange = collectionId => {
+      setSelectedCollection(collectionId);
+      setAttributes({
+        collection: collectionId
+      });
+    };
+
+    //const selectedProductData = products.find( product => product.id === selectedProduct );
+    //let productData = selectedProductData;
+    // if (!products) {
+    //   products = [{
+    //     id: '',
+    //     name: 'Product Name',
+    //     description: 'Product Description',
+    //     price: '0.00',
+    //     image: 'https://via.placeholder.com/360x360'
+    //   }];
+    // }
+
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PanelBody, {
+      title: "Collection Settings",
+      initialOpen: true
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectControl, {
+      label: "Select a Collection",
+      value: selectedCollection,
+      options: [{
+        label: 'Select a Collection',
+        value: ''
+      }, ...collections.map(collection => ({
+        label: collection.title,
+        value: collection.id
+      }))],
+      onChange: onCollectionChange
+    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      style: {
+        display: 'grid',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+        gridGap: '1em'
+      }
+    }, products.map(product => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      key: product.id,
+      style: {
+        border: '1px solid #ccc',
+        padding: '1em'
+      }
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+      src: product.image,
+      alt: product.name
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, product.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      dangerouslySetInnerHTML: {
+        __html: product.description
+      }
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(product.price).toFixed(2))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+      allowedBlocks: ALLOWED_BLOCKS
+    }));
+  },
+  save: props => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks.Content, null);
+  }
+});
+
+/***/ }),
+
 /***/ "./src/vip-commerce-search-block.js":
 /*!******************************************!*\
   !*** ./src/vip-commerce-search-block.js ***!
@@ -286,6 +420,8 @@ var __webpack_exports__ = {};
 __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vip_commerce_block__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vip-commerce-block */ "./src/vip-commerce-block.js");
 /* harmony import */ var _vip_commerce_search_block__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vip-commerce-search-block */ "./src/vip-commerce-search-block.js");
+/* harmony import */ var _vip_commerce_collection_block__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vip-commerce-collection-block */ "./src/vip-commerce-collection-block.js");
+
 
 
 //import './vip-commerce-pattern.js';

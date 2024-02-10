@@ -1,5 +1,6 @@
 import './vip-commerce-block';
 import './vip-commerce-search-block';
+import './vip-commerce-collection-block';
 //import './vip-commerce-pattern.js';
 
 

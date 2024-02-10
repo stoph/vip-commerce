@@ -22,6 +22,7 @@ function vip_commerce_check_settings() {
 
   require_once( plugin_dir_path( __FILE__ ) . 'blocks/commerce-block.php' );
   require_once( plugin_dir_path( __FILE__ ) . 'blocks/commerce-search-block.php' );
+  require_once( plugin_dir_path( __FILE__ ) . 'blocks/commerce-collection-block.php' );
   //require_once( plugin_dir_path( __FILE__ ) . 'patterns/commerce-pattern.php' );
   add_action( 'enqueue_block_editor_assets', 'VIP\Commerce\vip_commerce_enqueue' );
 
