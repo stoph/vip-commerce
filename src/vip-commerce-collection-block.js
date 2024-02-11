@@ -1,7 +1,7 @@
 const { registerBlockType } = wp.blocks;
 const { apiFetch } = wp;
 const { useState, useEffect } = wp.element;
-const { PanelBody, TextControl, SelectControl, Button } = wp.components;
+const { CheckboxControl, PanelBody, TextControl, SelectControl, Button } = wp.components;
 
 const { InspectorControls, InnerBlocks } = wp.blockEditor;
 const ALLOWED_BLOCKS = ['core/paragraph', 'core/heading'];
@@ -18,14 +18,19 @@ registerBlockType( 'vip-commerce/vip-commerce-collection-block', {
     collection: {
       type: 'string',
       default: ''
-    }
+    },
+    selectedProducts: {
+      type: 'array',
+      default: [],
+    },
   },
 
   edit: ( props ) => {
-    const { attributes: { collection }, setAttributes } = props;
+    const { attributes: { collection, selectedProducts }, setAttributes } = props;
     const [ selectedCollection, setSelectedCollection ] = useState( collection );
     const [ products, setProducts ] = useState( [] );
     const [ collections, setCollections ] = useState( [] );
+    const [ selectedProductIds, setSelectedProductIds ] = useState(selectedProducts || []);
 
     useEffect( () => {
       apiFetch( { path: '/vip-commerce/v1/collections' } )
@@ -47,6 +52,16 @@ registerBlockType( 'vip-commerce/vip-commerce-collection-block', {
       setSelectedCollection(collectionId);
       setAttributes( { collection: collectionId } );
     };
+
+    const onProductSelectionChange = (productId, isSelected) => {
+      const newSelectedProducts = isSelected
+        ? [...selectedProducts, productId]
+        : selectedProducts.filter((id) => id !== productId);
+      setAttributes({ selectedProducts: newSelectedProducts });
+    };
+
+    const displayedProducts = products.filter(product => selectedProducts.includes(product.id));
+
 
     //const selectedProductData = products.find( product => product.id === selectedProduct );
     //let productData = selectedProductData;
@@ -74,9 +89,19 @@ registerBlockType( 'vip-commerce/vip-commerce-collection-block', {
               onChange={onCollectionChange}
             />
           </PanelBody>
+          <PanelBody title="Product Selection" initialOpen={true}>
+            {products.map((product) => (
+              <CheckboxControl
+                key={product.id}
+                label={product.name}
+                checked={selectedProductIds.includes(String(product.id))}
+                onChange={(isSelected) => onProductSelectionChange(product.id, isSelected)}
+              />
+            ))}
+          </PanelBody>
         </InspectorControls>
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))', gridGap: '1em' }}>
-          {products.map((product) => (
+          {displayedProducts.map((product) => (
             <div key={product.id} style={{ border: '1px solid #ccc', padding: '1em' }}>
               <img src={product.image} alt={product.name} />
               <h2>{product.name}</h2>

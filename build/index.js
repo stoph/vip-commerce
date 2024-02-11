@@ -87,6 +87,7 @@ const {
   useEffect
 } = wp.element;
 const {
+  CheckboxControl,
   PanelBody,
   TextControl,
   SelectControl,
@@ -109,18 +110,24 @@ registerBlockType('vip-commerce/vip-commerce-collection-block', {
     collection: {
       type: 'string',
       default: ''
+    },
+    selectedProducts: {
+      type: 'array',
+      default: []
     }
   },
   edit: props => {
     const {
       attributes: {
-        collection
+        collection,
+        selectedProducts
       },
       setAttributes
     } = props;
     const [selectedCollection, setSelectedCollection] = useState(collection);
     const [products, setProducts] = useState([]);
     const [collections, setCollections] = useState([]);
+    const [selectedProductIds, setSelectedProductIds] = useState(selectedProducts || []);
     useEffect(() => {
       apiFetch({
         path: '/vip-commerce/v1/collections'
@@ -143,6 +150,13 @@ registerBlockType('vip-commerce/vip-commerce-collection-block', {
         collection: collectionId
       });
     };
+    const onProductSelectionChange = (productId, isSelected) => {
+      const newSelectedProducts = isSelected ? [...selectedProducts, productId] : selectedProducts.filter(id => id !== productId);
+      setAttributes({
+        selectedProducts: newSelectedProducts
+      });
+    };
+    const displayedProducts = products.filter(product => selectedProducts.includes(product.id));
 
     //const selectedProductData = products.find( product => product.id === selectedProduct );
     //let productData = selectedProductData;
@@ -170,13 +184,21 @@ registerBlockType('vip-commerce/vip-commerce-collection-block', {
         value: collection.id
       }))],
       onChange: onCollectionChange
-    }))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PanelBody, {
+      title: "Product Selection",
+      initialOpen: true
+    }, products.map(product => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CheckboxControl, {
+      key: product.id,
+      label: product.name,
+      checked: selectedProductIds.includes(String(product.id)),
+      onChange: isSelected => onProductSelectionChange(product.id, isSelected)
+    })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       style: {
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
         gridGap: '1em'
       }
-    }, products.map(product => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }, displayedProducts.map(product => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       key: product.id,
       style: {
         border: '1px solid #ccc',
