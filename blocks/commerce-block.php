@@ -20,7 +20,7 @@ function vip_commerce_get_products() {
             title
             descriptionHtml
             priceRange {
-              minVariantPrice {
+              maxVariantPrice {
                 amount
               }
             }
@@ -46,7 +46,7 @@ GRAPHQL;
       'id' => $node['id'],
       'name' => $node['title'],
       'description' => $node['descriptionHtml'],
-      'price' => $node['priceRange']['minVariantPrice']['amount'],
+      'price' => $node['priceRange']['maxVariantPrice']['amount'],
       'image' => $node['images']['edges'][0]['node']['originalSrc'],
     );
   }, $data['data']['ShopifyStorefront_products']['edges'] );

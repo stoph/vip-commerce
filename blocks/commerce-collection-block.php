@@ -60,7 +60,7 @@ function vip_commerce_get_products_by_collection( $collectionId ) {
               title
               descriptionHtml
               priceRange {
-                minVariantPrice {
+                maxVariantPrice {
                   amount
                 }
               }
@@ -86,7 +86,7 @@ function vip_commerce_get_products_by_collection( $collectionId ) {
       'id' => $node['id'],
       'name' => $node['title'],
       'description' => $node['descriptionHtml'],
-      'price' => $node['priceRange']['minVariantPrice']['amount'],
+      'price' => $node['priceRange']['maxVariantPrice']['amount'],
       'image' => $node['images']['edges'][0]['node']['originalSrc'],
     );
   }, $data['data']['ShopifyStorefront_collection']['products']['edges'] );

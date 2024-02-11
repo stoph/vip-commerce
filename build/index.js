@@ -127,7 +127,6 @@ registerBlockType('vip-commerce/vip-commerce-collection-block', {
     const [selectedCollection, setSelectedCollection] = useState(collection);
     const [products, setProducts] = useState([]);
     const [collections, setCollections] = useState([]);
-    const [selectedProductIds, setSelectedProductIds] = useState(selectedProducts || []);
     useEffect(() => {
       apiFetch({
         path: '/vip-commerce/v1/collections'
@@ -147,29 +146,17 @@ registerBlockType('vip-commerce/vip-commerce-collection-block', {
     const onCollectionChange = collectionId => {
       setSelectedCollection(collectionId);
       setAttributes({
-        collection: collectionId
+        collection: collectionId,
+        selectedProducts: []
       });
     };
     const onProductSelectionChange = (productId, isSelected) => {
-      const newSelectedProducts = isSelected ? [...selectedProducts, productId] : selectedProducts.filter(id => id !== productId);
+      const updatedSelectedProducts = isSelected ? [...selectedProducts, productId] : selectedProducts.filter(id => id !== productId);
       setAttributes({
-        selectedProducts: newSelectedProducts
+        selectedProducts: updatedSelectedProducts
       });
     };
-    const displayedProducts = products.filter(product => selectedProducts.includes(product.id));
-
-    //const selectedProductData = products.find( product => product.id === selectedProduct );
-    //let productData = selectedProductData;
-    // if (!products) {
-    //   products = [{
-    //     id: '',
-    //     name: 'Product Name',
-    //     description: 'Product Description',
-    //     price: '0.00',
-    //     image: 'https://via.placeholder.com/360x360'
-    //   }];
-    // }
-
+    const displayedProducts = selectedProducts.length > 0 ? products.filter(product => selectedProducts.includes(product.id)) : products;
     return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InspectorControls, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PanelBody, {
       title: "Collection Settings",
       initialOpen: true
@@ -190,12 +177,12 @@ registerBlockType('vip-commerce/vip-commerce-collection-block', {
     }, products.map(product => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(CheckboxControl, {
       key: product.id,
       label: product.name,
-      checked: selectedProductIds.includes(String(product.id)),
+      checked: selectedProducts.includes(product.id),
       onChange: isSelected => onProductSelectionChange(product.id, isSelected)
     })))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       style: {
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fill, minmax(150px, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fill, minmax(300px, 1fr))',
         gridGap: '1em'
       }
     }, displayedProducts.map(product => (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {

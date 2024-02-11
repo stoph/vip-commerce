@@ -23,7 +23,7 @@ function vip_commerce_get_products_by_name( $search_term ) {
             title
             descriptionHtml
             priceRange {
-              minVariantPrice {
+              maxVariantPrice {
                 amount
               }
             }
@@ -48,7 +48,7 @@ function vip_commerce_get_products_by_name( $search_term ) {
       'id' => $node['id'],
       'name' => $node['title'],
       'description' => $node['descriptionHtml'],
-      'price' => $node['priceRange']['minVariantPrice']['amount'],
+      'price' => $node['priceRange']['maxVariantPrice']['amount'],
       'image' => $node['images']['edges'][0]['node']['originalSrc'],
     );
   }, $data['data']['ShopifyStorefront_products']['edges'] );
@@ -65,7 +65,7 @@ function vip_commerce_get_product_by_id( $product_id ) {
       title
       descriptionHtml
       priceRange {
-        minVariantPrice {
+        maxVariantPrice {
           amount
         }
       }
@@ -89,7 +89,7 @@ GRAPHQL;
 //         title
 //         descriptionHtml
 //         priceRange {
-//           minVariantPrice {
+//           maxVariantPrice {
 //             amount
 //           }
 //         }
@@ -117,7 +117,7 @@ GRAPHQL;
     'name' => $product['title'],
     'slug' => $slug,
     'description' => $product['descriptionHtml'],
-    'price' => $product['priceRange']['minVariantPrice']['amount'],
+    'price' => $product['priceRange']['maxVariantPrice']['amount'],
     'image' => $product['images']['edges'][0]['node']['originalSrc'],
   );
 }
