@@ -1,13 +1,11 @@
-const { registerBlockType } = wp.blocks;
+
 const { apiFetch } = wp;
+const { useSelect } = wp.data;
+const { registerBlockType } = wp.blocks;
 const { useState, useEffect } = wp.element;
-const { TextControl, SelectControl, Button } = wp.components;
-
-const { InnerBlocks } = wp.blockEditor;
+const { TextControl, SelectControl, Button, PanelBody } = wp.components;
+const { InnerBlocks, InspectorControls } = wp.blockEditor;
 const ALLOWED_BLOCKS = ['core/paragraph', 'core/heading'];
-
-const { InspectorControls } = wp.blockEditor;
-const { PanelBody } = wp.components;
 
 registerBlockType( 'vip-commerce/vip-commerce-search-block', {
   title: 'VIP Commerce Search Block',
@@ -27,6 +25,19 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
   edit: ( props ) => {
     const { attributes: { searchPhrase, selectedProduct }, setAttributes } = props;
     const [ products, setProducts ] = useState( [] );
+    const [recommendedProducts, setRecommendedProducts] = useState([]);
+
+    const postTags = useSelect(select => select('core/editor').getEditedPostAttribute('tags'), []);
+
+    // Effect for recommended products based on postTags
+    useEffect(() => {  
+      if (postTags && postTags.length > 0) {
+        apiFetch({ path: `/vip-commerce/v1/products-by-tag?tags=${postTags.join(',')}` })
+          .then(data => {
+            setRecommendedProducts(data.products);
+          });
+      }
+    }, [postTags]);
 
     useEffect( () => {
       if (searchPhrase) {
@@ -51,7 +62,8 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
       }
     };
 
-    const selectedProductData = products.find( product => product.id === selectedProduct );
+    //const selectedProductData = products.find( product => product.id === selectedProduct );
+    const selectedProductData = products.find(product => product.id === selectedProduct) || recommendedProducts.find(product => product.id === selectedProduct);
 
     let productData = selectedProductData;
     if (!productData) {
@@ -75,10 +87,26 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
             <SelectControl
               label="Select a Product"
               value={ selectedProduct }
-              options={ products.map( product => ( { label: product.name, value: product.id } ) ) }
+              //options={ products.map( product => ( { label: product.name, value: product.id } ) ) }
+              options={[
+                { label: "Choose one...", value: '' },
+                ...products.map(product => ({ label: product.name, value: product.id }))
+              ]}
               onChange={ handleOnSelectProduct }
             />
             <Button isPrimary onClick={ handleOnSelectButtonClick }>Select</Button>
+          </PanelBody>
+          <PanelBody title="Recommended Products">
+            <SelectControl
+              label="Select a Recommended Product"
+              value={selectedProduct}
+              //options={recommendedProducts.map(product => ({ label: product.name, value: product.id }))}
+              options={[
+                { label: "Choose one...", value: '' },
+                ...recommendedProducts.map(product => ({ label: product.name, value: product.id }))
+              ]}
+              onChange={handleOnSelectProduct}
+            />
           </PanelBody>
         </InspectorControls>
         { productData && (

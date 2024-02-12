@@ -194,11 +194,19 @@ registerBlockType('vip-commerce/vip-commerce-collection-block', {
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
       src: product.image,
       alt: product.name
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, product.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h4", null, product.name), product.description && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
       dangerouslySetInnerHTML: {
         __html: product.description
       }
-    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(product.price).toFixed(2))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+      style: {
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'center'
+      }
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "$", parseFloat(product.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
+      isPrimary: true
+    }, "Add to Cart"))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
       allowedBlocks: ALLOWED_BLOCKS
     }));
   },
@@ -220,11 +228,14 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
 
 const {
-  registerBlockType
-} = wp.blocks;
-const {
   apiFetch
 } = wp;
+const {
+  useSelect
+} = wp.data;
+const {
+  registerBlockType
+} = wp.blocks;
 const {
   useState,
   useEffect
@@ -232,18 +243,14 @@ const {
 const {
   TextControl,
   SelectControl,
-  Button
-} = wp.components;
-const {
-  InnerBlocks
-} = wp.blockEditor;
-const ALLOWED_BLOCKS = ['core/paragraph', 'core/heading'];
-const {
-  InspectorControls
-} = wp.blockEditor;
-const {
+  Button,
   PanelBody
 } = wp.components;
+const {
+  InnerBlocks,
+  InspectorControls
+} = wp.blockEditor;
+const ALLOWED_BLOCKS = ['core/paragraph', 'core/heading'];
 registerBlockType('vip-commerce/vip-commerce-search-block', {
   title: 'VIP Commerce Search Block',
   icon: 'smiley',
@@ -267,6 +274,19 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
       setAttributes
     } = props;
     const [products, setProducts] = useState([]);
+    const [recommendedProducts, setRecommendedProducts] = useState([]);
+    const postTags = useSelect(select => select('core/editor').getEditedPostAttribute('tags'), []);
+
+    // Effect for recommended products based on postTags
+    useEffect(() => {
+      if (postTags && postTags.length > 0) {
+        apiFetch({
+          path: `/vip-commerce/v1/products-by-tag?tags=${postTags.join(',')}`
+        }).then(data => {
+          setRecommendedProducts(data.products);
+        });
+      }
+    }, [postTags]);
     useEffect(() => {
       if (searchPhrase) {
         apiFetch({
@@ -291,7 +311,9 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
         handleOnSelectProduct(products[0].id);
       }
     };
-    const selectedProductData = products.find(product => product.id === selectedProduct);
+
+    //const selectedProductData = products.find( product => product.id === selectedProduct );
+    const selectedProductData = products.find(product => product.id === selectedProduct) || recommendedProducts.find(product => product.id === selectedProduct);
     let productData = selectedProductData;
     if (!productData) {
       productData = {
@@ -309,16 +331,36 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
       onChange: handleOnChange
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectControl, {
       label: "Select a Product",
-      value: selectedProduct,
-      options: products.map(product => ({
+      value: selectedProduct
+      //options={ products.map( product => ( { label: product.name, value: product.id } ) ) }
+      ,
+      options: [{
+        label: "Choose one...",
+        value: ''
+      }, ...products.map(product => ({
         label: product.name,
         value: product.id
-      })),
+      }))],
       onChange: handleOnSelectProduct
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
       isPrimary: true,
       onClick: handleOnSelectButtonClick
-    }, "Select"))), productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(productData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+    }, "Select")), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(PanelBody, {
+      title: "Recommended Products"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(SelectControl, {
+      label: "Select a Recommended Product",
+      value: selectedProduct
+      //options={recommendedProducts.map(product => ({ label: product.name, value: product.id }))}
+      ,
+      options: [{
+        label: "Choose one...",
+        value: ''
+      }, ...recommendedProducts.map(product => ({
+        label: product.name,
+        value: product.id
+      }))],
+      onChange: handleOnSelectProduct
+    }))), productData && (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(productData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
       style: {
         width: '240px'
       }

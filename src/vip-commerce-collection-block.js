@@ -95,9 +95,14 @@ registerBlockType( 'vip-commerce/vip-commerce-collection-block', {
           {displayedProducts.map((product) => (
             <div key={product.id} style={{ border: '1px solid #ccc', padding: '1em' }}>
               <img src={product.image} alt={product.name} />
-              <h2>{product.name}</h2>
-              <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
-              <p>${parseFloat(product.price).toFixed(2)}</p>
+              <h4>{product.name}</h4>
+              {product.description && (
+                <div dangerouslySetInnerHTML={{ __html: product.description }}></div>
+              )}
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+                <div>${parseFloat(product.price).toFixed(2)}</div>
+                <Button isPrimary>Add to Cart</Button>
+              </div>
             </div>
           ))}
         </div>

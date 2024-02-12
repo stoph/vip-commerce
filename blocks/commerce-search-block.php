@@ -1,6 +1,7 @@
 <?php 
 namespace VIP\Commerce;
 
+// Search by name
 add_action( 'rest_api_init', function () {
   register_rest_route( 'vip-commerce/v1', '/products-by-name', array(
     'methods' => 'GET',
@@ -39,7 +40,75 @@ function vip_commerce_get_products_by_name( $search_term ) {
       }
     }
   GRAPHQL;
-// error_log($query);
+
+  $data = call_mesh_api( $query );
+
+  $products = array_map( function( $edge ) {
+    $node = $edge['node'];
+    return array(
+      'id' => $node['id'],
+      'name' => $node['title'],
+      'description' => $node['descriptionHtml'],
+      'price' => $node['priceRange']['maxVariantPrice']['amount'],
+      'image' => $node['images']['edges'][0]['node']['originalSrc'],
+    );
+  }, $data['data']['ShopifyStorefront_products']['edges'] );
+
+  return array( 'products' => $products );
+}
+
+// Search by tags
+add_action( 'rest_api_init', function () {
+  register_rest_route( 'vip-commerce/v1', '/products-by-tag', array(
+    'methods' => 'GET',
+    'callback' => function ( \WP_REST_Request $request ) {
+      $tags = $request->get_param( 'tags' );
+      return vip_commerce_get_products_by_tag( $tags );
+    },
+    'permission_callback' => '__return_true',
+  ) );
+} );
+
+function vip_commerce_get_products_by_tag( $tag_ids ) {
+  $tag_ids_array = explode(',', $tag_ids);
+  $tags_query_parts = [];
+
+  foreach ($tag_ids_array as $tag_id) {
+      $tag = get_term_by('id', (int)$tag_id, 'post_tag');
+      if ($tag) {
+          $tags_query_parts[] = "(tag:" . $tag->name . ")";
+      }
+  }
+
+  $tags_query = implode(' OR ', $tags_query_parts);
+  // ShopifyStorefront_products(first: 10, query: "tag:jamaica OR tag:valentine's day") {
+
+  $query = <<<GRAPHQL
+    {
+      ShopifyStorefront_products(first: 10, query: "$tags_query") {
+        edges {
+          node {
+            id
+            title
+            descriptionHtml
+            priceRange {
+              maxVariantPrice {
+                amount
+              }
+            }
+            images(first: 1) {
+              edges {
+                node {
+                  originalSrc
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  GRAPHQL;
+
   $data = call_mesh_api( $query );
 
   $products = array_map( function( $edge ) {
@@ -106,8 +175,6 @@ GRAPHQL;
 // }
 // GRAPHQL;
   $data = call_mesh_api( $query );
-  //error_log($query);
-  //error_log(print_r($data, true));
 
   $product = $data['data']['ShopifyStorefront_product'];
 
