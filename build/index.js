@@ -280,7 +280,9 @@ registerBlockType('vip-commerce/vip-commerce-display-block', {
       }
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: "https://stoph-test.myshopify.com/products/"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, "View Product"))))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
+      isPrimary: true
+    }, "Add to Cart"))))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
       allowedBlocks: ALLOWED_BLOCKS
     }));
   },

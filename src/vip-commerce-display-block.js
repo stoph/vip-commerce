@@ -35,7 +35,7 @@ registerBlockType( 'vip-commerce/vip-commerce-display-block', {
                   <td>
                     <p dangerouslySetInnerHTML={ { __html: productData.description } }></p>
                       <a href='https://stoph-test.myshopify.com/products/'>
-                        <button>View Product</button>
+                        <Button isPrimary>Add to Cart</Button>
                       </a>
                   </td>
                 </tr>

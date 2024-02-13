@@ -223,13 +223,12 @@ function vip_commerce_search_render_block( $attributes, $content ) {
 
   $output = '<div class="vip-commerce-product">';
   $output .= '<h2>' . esc_html( $product['name'] ) . '</h2>';
-  $output .= '<p>$' . number_format( $product['price'], 2 ) . '</p>';
   $output .= '<table><tbody>';
   $output .= '<tr><td style="width: 240px;">';
   $output .= '<img src="' . esc_url( $product['image'] ) . '" alt="' . esc_attr( $product['name'] ) . '" style="max-width: 100%;" />';
   $output .= '</td><td>';
   $output .= '<p>' . $product['description'] . '</p>';
-
+  $output .= '<p>$' . number_format( $product['price'], 2 ) . ' <button>Add to Cart</button></p>';
   //$output .= '<a href="https://stoph-test.myshopify.com/products/' . $product['slug'] . '"><button>View Product</button></a>';
   $output .= '<a href="' . $pdp_url . '?id=' . $product['id'] . '"><button>View Product</button></a>';
   
