@@ -100,7 +100,13 @@ register_block_type( 'vip-commerce/vip-commerce-collection-block', array(
 ) );
 
 function vip_commerce_collection_render_block( $attributes, $content) {
-  $products = vip_commerce_get_products();
+  if ( ! isset( $attributes['collection'] ) ) {
+    return '<div class="vip-commerce-product">No collection selected</div>';
+  }
+
+  $collection_id = $attributes['collection'];
+
+  $products = vip_commerce_get_products_by_collection( $collection_id );
   
   $pdp_url = get_product_detail_page_url();
 
