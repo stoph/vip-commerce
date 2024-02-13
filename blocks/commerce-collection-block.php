@@ -102,6 +102,8 @@ register_block_type( 'vip-commerce/vip-commerce-collection-block', array(
 function vip_commerce_collection_render_block( $attributes, $content) {
   $products = vip_commerce_get_products();
   
+  $pdp_url = get_product_detail_page_url();
+
   $output = '<div class="vip-commerce-products">';
   
   foreach ( $products['products'] as $product ) {
@@ -110,6 +112,7 @@ function vip_commerce_collection_render_block( $attributes, $content) {
     $output .= '<h2>' . esc_html( $product['name'] ) . '</h2>';
     $output .= '<p>' . $product['description'] . '</p>';
     $output .= '<p>$' . number_format( $product['price'], 2 ) . '</p>';
+    $output .= '<a href="' . $pdp_url . '?id=' . $product['id'] . '"><button>View Product</button></a>';
     
     $output .= '</div>';
   }

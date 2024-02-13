@@ -22,6 +22,9 @@ const {
   useState,
   useEffect
 } = wp.element;
+const {
+  Button
+} = wp.components;
 registerBlockType('vip-commerce/vip-commerce-block', {
   title: 'VIP Commerce Block',
   icon: 'smiley',
@@ -57,7 +60,9 @@ registerBlockType('vip-commerce/vip-commerce-block', {
       style: {
         maxWidth: '30%'
       }
-    }))));
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
+      isPrimary: true
+    }, "View Product"))));
   },
   save() {
     return null;
@@ -206,7 +211,76 @@ registerBlockType('vip-commerce/vip-commerce-collection-block', {
       }
     }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, "$", parseFloat(product.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
       isPrimary: true
-    }, "Add to Cart"))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+    }, "View Product"))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+      allowedBlocks: ALLOWED_BLOCKS
+    }));
+  },
+  save: props => {
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks.Content, null);
+  }
+});
+
+/***/ }),
+
+/***/ "./src/vip-commerce-display-block.js":
+/*!*******************************************!*\
+  !*** ./src/vip-commerce-display-block.js ***!
+  \*******************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! react */ "react");
+/* harmony import */ var react__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(react__WEBPACK_IMPORTED_MODULE_0__);
+
+const {
+  apiFetch
+} = wp;
+const {
+  useSelect
+} = wp.data;
+const {
+  registerBlockType
+} = wp.blocks;
+const {
+  useState,
+  useEffect
+} = wp.element;
+const {
+  TextControl,
+  SelectControl,
+  Button,
+  PanelBody
+} = wp.components;
+const {
+  InnerBlocks,
+  InspectorControls
+} = wp.blockEditor;
+const ALLOWED_BLOCKS = ['core/paragraph', 'core/heading'];
+registerBlockType('vip-commerce/vip-commerce-display-block', {
+  title: 'VIP Commerce Display Block',
+  icon: 'smiley',
+  category: 'common',
+  edit: props => {
+    let productData = {
+      name: 'Product Name',
+      description: 'Product Description',
+      price: '0.00',
+      image: 'https://via.placeholder.com/360x360'
+    };
+    return (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(react__WEBPACK_IMPORTED_MODULE_0__.Fragment, null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("h2", null, productData.name), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", null, "$", parseFloat(productData.price).toFixed(2)), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("table", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tbody", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("tr", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", {
+      style: {
+        width: '240px'
+      }
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("img", {
+      src: productData.image,
+      alt: productData.name
+    })), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("td", null, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("p", {
+      dangerouslySetInnerHTML: {
+        __html: productData.description
+      }
+    }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
+      href: "https://stoph-test.myshopify.com/products/"
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, "View Product"))))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
       allowedBlocks: ALLOWED_BLOCKS
     }));
   },
@@ -373,7 +447,9 @@ registerBlockType('vip-commerce/vip-commerce-search-block', {
       }
     }), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: "https://stoph-test.myshopify.com/products/"
-    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)("button", null, "View Product"))))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
+    }, (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(Button, {
+      isPrimary: true
+    }, "View Product"))))))), (0,react__WEBPACK_IMPORTED_MODULE_0__.createElement)(InnerBlocks, {
       allowedBlocks: ALLOWED_BLOCKS
     }));
   },
@@ -472,6 +548,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _vip_commerce_block__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./vip-commerce-block */ "./src/vip-commerce-block.js");
 /* harmony import */ var _vip_commerce_search_block__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./vip-commerce-search-block */ "./src/vip-commerce-search-block.js");
 /* harmony import */ var _vip_commerce_collection_block__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./vip-commerce-collection-block */ "./src/vip-commerce-collection-block.js");
+/* harmony import */ var _vip_commerce_display_block__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./vip-commerce-display-block */ "./src/vip-commerce-display-block.js");
+
 
 
 

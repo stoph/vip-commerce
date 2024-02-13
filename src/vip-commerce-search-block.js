@@ -122,7 +122,7 @@ registerBlockType( 'vip-commerce/vip-commerce-search-block', {
                   <td>
                     <p dangerouslySetInnerHTML={ { __html: productData.description } }></p>
                       <a href='https://stoph-test.myshopify.com/products/'>
-                        <button>View Product</button>
+                        <Button isPrimary>View Product</Button>
                       </a>
                   </td>
                 </tr>

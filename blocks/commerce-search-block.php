@@ -219,6 +219,8 @@ function vip_commerce_search_render_block( $attributes, $content ) {
     return '<div class="vip-commerce-product">Product not found [' . $selected_product_id . ']</div>';
   }
 
+  $pdp_url = get_product_detail_page_url();
+
   $output = '<div class="vip-commerce-product">';
   $output .= '<h2>' . esc_html( $product['name'] ) . '</h2>';
   $output .= '<p>$' . number_format( $product['price'], 2 ) . '</p>';
@@ -228,7 +230,9 @@ function vip_commerce_search_render_block( $attributes, $content ) {
   $output .= '</td><td>';
   $output .= '<p>' . $product['description'] . '</p>';
 
-  $output .= '<a href="https://stoph-test.myshopify.com/products/' . $product['slug'] . '"><button>View Product</button></a>';
+  //$output .= '<a href="https://stoph-test.myshopify.com/products/' . $product['slug'] . '"><button>View Product</button></a>';
+  $output .= '<a href="' . $pdp_url . '?id=' . $product['id'] . '"><button>View Product</button></a>';
+  
   $output .= '</td></tr>';
   $output .= '</tbody></table>';
   $output .= '</div>';

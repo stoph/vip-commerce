@@ -101,7 +101,8 @@ registerBlockType( 'vip-commerce/vip-commerce-collection-block', {
               )}
               <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
                 <div>${parseFloat(product.price).toFixed(2)}</div>
-                <Button isPrimary>Add to Cart</Button>
+                {/* <Button isPrimary>Add to Cart</Button> */}
+                <Button isPrimary>View Product</Button>
               </div>
             </div>
           ))}

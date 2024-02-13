@@ -1,6 +1,8 @@
 const { registerBlockType } = wp.blocks;
 const { apiFetch } = wp;
 const { useState, useEffect } = wp.element;
+const { Button } = wp.components;
+
 
 registerBlockType( 'vip-commerce/vip-commerce-block', {
   title: 'VIP Commerce Block',
@@ -25,6 +27,7 @@ registerBlockType( 'vip-commerce/vip-commerce-block', {
             <div dangerouslySetInnerHTML={ { __html: product.description } }></div>
             <p>${ parseFloat(product.price).toFixed(2) }</p>
             <img src={ product.image } alt={ product.name } style={ { maxWidth: '30%' } } />
+            <Button isPrimary>View Product</Button>
           </div>
         ) )}
       </div>

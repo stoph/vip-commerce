@@ -62,6 +62,8 @@ register_block_type( 'vip-commerce/vip-commerce-block', array(
 function vip_commerce_render_block( $attributes ) {
   $products = vip_commerce_get_products();
   
+  $pdp_url = get_product_detail_page_url();
+
   $output = '<div class="vip-commerce-products">';
   
   foreach ( $products['products'] as $product ) {
@@ -70,6 +72,7 @@ function vip_commerce_render_block( $attributes ) {
     $output .= '<p>' . $product['description'] . '</p>';
     $output .= '<p>$' . number_format( $product['price'], 2 ) . '</p>';
     $output .= '<img src="' . esc_url( $product['image'] ) . '" alt="' . esc_attr( $product['name'] ) . '" style="max-width: 30%;" />';
+    $output .= '<a href="' . $pdp_url . '?id=' . $product['id'] . '"><button>View Product</button></a>';
     $output .= '</div>';
   }
   
