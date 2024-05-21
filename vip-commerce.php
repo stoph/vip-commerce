@@ -153,3 +153,31 @@ function vip_commerce_settings_page_html() {
   </div>
   <?php
 }
+
+
+// Block Binding
+add_action( 'init', 'vip_commerce_bound_register_block_bindings' );
+
+function vip_commerce_bound_register_block_bindings() {
+	register_block_bindings_source( 'vip-commerce-bound-block/product-data', array(
+		'label'              => __( 'User Data', 'projectslug' ),
+		'get_value_callback' => 'vip_commerce_bound_user_data_bindings'
+	) );
+}
+
+function vip_commerce_bound_user_data_bindings( $source_args ) {
+	
+  $product_id = $source_args['gid'];
+  $results = vip_commerce_get_product_by_id( $product_id);
+
+  switch ( $source_args['key'] ) {
+		case 'name':
+			return $results['name'];
+		case 'description':
+			return $results['description'];
+		case 'image':
+			return $results['image'];
+		default:
+			return "No data for key: {$source_args['key']}";
+	}
+}
