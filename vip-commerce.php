@@ -156,14 +156,13 @@ function vip_commerce_settings_page_html() {
 
 
 // Block Binding
-add_action( 'init', 'vip_commerce_bound_register_block_bindings' );
-
 function vip_commerce_bound_register_block_bindings() {
 	register_block_bindings_source( 'vip-commerce-bound-block/product-data', array(
-		'label'              => __( 'User Data', 'projectslug' ),
-		'get_value_callback' => 'vip_commerce_bound_user_data_bindings'
+		'label'              => __( 'User Data', 'vip-commerce-bound-block' ),
+		'get_value_callback' => 'VIP\Commerce\vip_commerce_bound_user_data_bindings'
 	) );
 }
+add_action( 'init', 'VIP\Commerce\vip_commerce_bound_register_block_bindings' );
 
 function vip_commerce_bound_user_data_bindings( $source_args ) {
 	
