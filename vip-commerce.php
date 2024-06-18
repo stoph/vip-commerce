@@ -56,7 +56,7 @@ function call_mesh_api( $query) {
   global $mesh_api_key;
   global $mesh_project_id;
 
-  $response = wp_remote_post( 'https://mesh-api.wpvip.com/project/' . $mesh_project_id . '/production/graphql', [
+  $response = wp_remote_post( 'https://api.mesh.wpvip.com/project/' . $mesh_project_id . '/production/graphql', [
     'headers' => [
       'Content-Type' => 'application/json',
       'Authorization' => 'Bearer ' . $mesh_api_key,
